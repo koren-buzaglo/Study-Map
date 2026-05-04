@@ -1609,12 +1609,13 @@ async function syncToBackend() {
 
     try {
         const payload = {
-            subjects: subjects,
-            nodes: nodes,
-            connections: connections,
-            timestamp: Date.now()
-        };
-
+        data: {
+        subjects: subjects,
+        nodes: nodes,
+        connections: connections,
+        timestamp: Date.now()
+        }
+    };
         const controller = new AbortController();
         const timeoutId = setTimeout(() => controller.abort(), 15000);
         
@@ -1741,10 +1742,12 @@ window.addEventListener('beforeunload', (e) => {
         navigator.sendBeacon && navigator.sendBeacon(
             BACKEND_URL + '/api/sync/write',
             new Blob([JSON.stringify({
-                subjects: subjects,
-                nodes: nodes,
-                connections: connections,
-                timestamp: Date.now()
+                data: {
+                    subjects: subjects,
+                    nodes: nodes,
+                    connections: connections,
+                    timestamp: Date.now()
+                }
             })], { type: 'application/json' })
         );
     }
